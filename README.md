@@ -11,7 +11,8 @@ Sequential model : The neural network was built using two LSTM layers first, fla
 The script is rather simple and will be a good template for future models. 
 
 Ideas to improve the script :
-    - Use a non discrete action space to allow for position adjustments and not doing anything \n
-    - Input more data in the observation (Open, high, low, close, macroeconomic indicators, daily/monthly dummies...) \n
-    - Try different Neural network models (change number of layers, neurons, activation functions...) \n
-    - Try different agent \n
+
+- Use a non discrete action space to allow for position adjustments and not doing anything   
+- Input more data in the observation (Open, high, low, close, macroeconomic indicators, daily/monthly dummies...) 
+- Try different Neural network models (change number of layers, neurons, activation functions...) 
+- Try different agent 
