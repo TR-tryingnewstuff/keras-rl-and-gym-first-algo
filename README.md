@@ -6,7 +6,7 @@ Also pip install does not work with tvDatafeed, please refer to https://github.c
 	
 	pip install --upgrade --no-cache-dir git+https://github.com/StreamAlpha/tvdatafeed.git
 
-There are 3 possible different actions it must choose from at every step : sell (O), do nothing (1), buy (2)
+There are 3 possible different actions it must choose from at every step : sell (0), do nothing (1), buy (2)
 
 Rewards are based on profit / loss. If the action 1 was picked and there is low volatility, then it will receive a reward (to account for lower transaction costs), otherwise it will be penalized (missed opportunity).
 
