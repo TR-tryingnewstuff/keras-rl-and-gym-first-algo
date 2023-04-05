@@ -19,9 +19,8 @@ WINDOW = 20
 plot_df = pd.DataFrame(TvDatafeed().get_hist('ES1!', 'CME_MINI', Interval.in_daily, 5000))
 df = pd.DataFrame(TvDatafeed().get_hist('ES1!', 'CME_MINI', Interval.in_daily, 5000))
 
-
 df['relative_range_position'] = (df['close'] - ((df['low'].rolling(WINDOW).min() + df['high'].rolling(WINDOW).max()) /2)) / ((df['high'].rolling(WINDOW).max() - df['low'].rolling(WINDOW).min()) /2)
-df['body'] = (df['open'] - df['close'])/ df['open']  * 100
+df['body'] = (df['close'] - df['open'])/ df['open']  * 100
 
 df = df.drop(['symbol', 'volume'], axis = 1).dropna()
 
@@ -73,7 +72,7 @@ class Market(gym.Env):
         elif (self.action == 0):
             reward = self.observation[-1] * -1 - self.commission
 
-        else:
+        elif (self.action == 2):
             reward = self.observation[-1] - self.commission
         
         
@@ -84,7 +83,7 @@ class Market(gym.Env):
         
         # Information printing and plotting to visualize the process, significantly slows down the process so it is not meant for extensive training
         
-        print(f'  action taken : {self.action}')
+        print(f'  action taken : {self.action}, scored : {round(reward, 3)}, obs : {self.observation[-1]}')
         i = self.index
         color_index = np.where(plot_df.open[i:i+WINDOW] < plot_df.close[i:i+WINDOW], 'gray', 'black')
         date_index = np.array(plot_df[i:i+WINDOW].index)
@@ -105,11 +104,7 @@ class Market(gym.Env):
         
         return self.observation, reward, self.done, info
     
-    def render(self, mode):
-         # TO DO : add rendering 
-         
-        pass
-        
+ 
      
         
 env = Market()
@@ -150,7 +145,8 @@ dqn = build_agent(build_model(actions), actions)
 # ---------------------------------------- Compile and train ------------------------------------------------------------------------------
 
 dqn.compile(optimizer='RMSprop')
-dqn.fit(env, nb_steps=1000, visualize=True, verbose=1)
+dqn.fit(env, nb_steps=1000, verbose=1)
+
 
 
 
