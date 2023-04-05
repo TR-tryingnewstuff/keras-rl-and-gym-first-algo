@@ -83,7 +83,7 @@ class Market(gym.Env):
         
         # Information printing and plotting to visualize the process, significantly slows down the process so it is not meant for extensive training
         
-        print(f'  action taken : {self.action}, scored : {round(reward, 3)}')
+        print(f'  action taken : {self.action}')
         i = self.index
         color_index = np.where(plot_df.open[i:i+WINDOW] < plot_df.close[i:i+WINDOW], 'gray', 'black')
         date_index = np.array(plot_df[i:i+WINDOW].index)
@@ -146,9 +146,4 @@ dqn = build_agent(build_model(actions), actions)
 
 dqn.compile(optimizer='RMSprop')
 dqn.fit(env, nb_steps=1000, verbose=1)
-
-
-
-
-
 
