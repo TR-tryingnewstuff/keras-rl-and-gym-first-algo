@@ -23,3 +23,4 @@ Ideas to improve the script :
 - Input more data in the observation (macroeconomic indicators, daily/monthly dummies...) 
 - Try different Neural network models (change number of layers, neurons, activation functions...) 
 - Try a different agent 
+- Add mutliple indices / stocks over which the bot can act to allow for relative strength strategies, hedging and others
