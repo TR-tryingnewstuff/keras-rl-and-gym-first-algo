@@ -1,5 +1,4 @@
-# keras-rl-and-gym-first-algo
-My first reinforcement learning algorithm using keras-rl and gym.
+# Trading bot using Keras-rl and Gym.
 
 The algorithm is meant to train to trade using the S&P500 historical price data. 
 Also pip install does not work with tvDatafeed, please refer to https://github.com/StreamAlpha/tvdatafeed  for more information or simply use the following command:
