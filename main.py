@@ -80,8 +80,14 @@ class Market(gym.Env):
             self.done = True
             
         info = {}
+              
+        return self.observation, reward, self.done, info
+    
+    
+    def render(self, mode):
         
-        # Information printing and plotting to visualize the process, significantly slows down the process so it is not meant for extensive training
+        # Information printing and plotting to visualize the process, significantly slows down training so it is not meant for extensive training
+        # Set visualize=False to disable it
         
         print(f'  action taken : {self.action}')
         i = self.index
@@ -101,10 +107,6 @@ class Market(gym.Env):
             
         plt.pause(0.1)
         plt.clf()
-        
-        return self.observation, reward, self.done, info
-    
- 
      
         
 env = Market()
@@ -145,5 +147,5 @@ dqn = build_agent(build_model(actions), actions)
 # ---------------------------------------- Compile and train ------------------------------------------------------------------------------
 
 dqn.compile(optimizer='RMSprop')
-dqn.fit(env, nb_steps=1000, verbose=1)
+dqn.fit(env, nb_steps=1000, verbose=1, visualize=True)
 
