@@ -43,7 +43,6 @@ class Market(gym.Env):
         self.index = np.random.randint(1, 4000)
         
         self.observation = np.asarray(df.iloc[self.index])
-        print(self.observation.shape)
     
     
     def reset(self):
