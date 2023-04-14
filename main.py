@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 import gym
-from gym.spaces import Discrete, Box
+from gym.spaces import Discrete
 from tvDatafeed import TvDatafeed, Interval
 
 import keras
@@ -40,9 +40,10 @@ class Market(gym.Env):
        
         self.done = False 
         self.n_step = 0
-        self.index = np.random.randint(1, 4000)
+        self.index = WINDOW
         
         self.observation = np.asarray(df.iloc[self.index])
+
     
     
     def reset(self):
@@ -51,7 +52,7 @@ class Market(gym.Env):
         
         self.done = False
         self.n_step = 0
-        self.index = np.random.randint(1, 4000)
+        self.index = WINDOW
         
         return self.observation
          
@@ -75,7 +76,7 @@ class Market(gym.Env):
             reward = self.observation[-1] - self.commission
         
         
-        if self.n_step == 500: 
+        if self.index == len(df) -1: 
             self.done = True
             
         info = {}
@@ -90,19 +91,19 @@ class Market(gym.Env):
         
         print(f'  action taken : {self.action}')
         i = self.index
-        color_index = np.where(plot_df.open[i:i+WINDOW] < plot_df.close[i:i+WINDOW], 'gray', 'black')
-        date_index = np.array(plot_df[i:i+WINDOW].index)
+        color_index = np.where(plot_df.open[i-WINDOW:i] < plot_df.close[i-WINDOW:i], 'gray', 'black')
+        date_index = np.array(plot_df[i-WINDOW:i].index)
         
-        bars = np.array(plot_df.close[i:i+WINDOW])-np.array(plot_df.open[i:i+WINDOW])
-        wicks = np.array(plot_df.high[i:i+WINDOW])-np.array(plot_df.low[i:i+WINDOW])
-        plt.bar(date_index, bars, width=0.7, bottom=plot_df.open[i:i+WINDOW], color=color_index)
-        plt.bar(date_index, wicks, width=0.1, bottom=plot_df.low[i:i+WINDOW], color=color_index)
+        bars = np.array(plot_df.close[i-WINDOW:i])-np.array(plot_df.open[i-WINDOW:i])
+        wicks = np.array(plot_df.high[i-WINDOW:i])-np.array(plot_df.low[i-WINDOW:i])
+        plt.bar(date_index, bars, width=0.7, bottom=plot_df.open[i-WINDOW:i], color=color_index)
+        plt.bar(date_index, wicks, width=0.1, bottom=plot_df.low[i-WINDOW:i], color=color_index)
         
         if self.action == 2:
-            plt.arrow(x=date_index[-1], y=plot_df.high[i+WINDOW-1]+7, dx=0, dy=-4, width=0.2, color='green')
+            plt.arrow(x=date_index[-1], y=plot_df.high[i-1]+7, dx=0, dy=-4, width=0.2, color='green')
             
         elif self.action == 0:
-            plt.arrow(x=date_index[-1], y=plot_df.high[i+WINDOW-1]+7, dx=0, dy=-4, width=0.2, color='red')
+            plt.arrow(x=date_index[-1], y=plot_df.high[i-1]+7, dx=0, dy=-4, width=0.2, color='red')
             
         plt.pause(0.1)
         plt.clf()
@@ -146,7 +147,7 @@ dqn = build_agent(build_model(actions), actions)
 # ---------------------------------------- Compile and train ------------------------------------------------------------------------------
 
 dqn.compile(optimizer='RMSprop')
-dqn.fit(env, nb_steps=1000, verbose=1, visualize=True)
+dqn.fit(env, nb_steps=100000, verbose=1, visualize=True)
 
 
 
