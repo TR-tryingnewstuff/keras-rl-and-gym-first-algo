@@ -48,8 +48,6 @@ class Market(gym.Env):
     
     def reset(self):
         
-        # Resets the environment with a random start index to shuffle the data and avoid that the algo learns the sequence
-        
         self.done = False
         self.n_step = 0
         self.index = WINDOW
